@@ -1,18 +1,23 @@
 //// [awaitUsingDeclarationsTopLevelOfModule.1.ts]
-import { _ as _dispose } from "@swc/helpers/_/_dispose";
-import { _ as _using } from "@swc/helpers/_/_using";
+import { _ as _ts_add_disposable_resource } from "@swc/helpers/_/_ts_add_disposable_resource";
+import { _ as _ts_dispose_resources } from "@swc/helpers/_/_ts_dispose_resources";
+let env = {
+    stack: [],
+    error: void 0,
+    hasError: !1
+};
 try {
-    var _x, _w, _stack = [];
-    _x = 1;
-    var z = _using(_stack, {
+    let z = _ts_add_disposable_resource(env, {
         async [Symbol.asyncDispose] () {}
-    }, !0), y = 2;
-    _w = 3;
-    var _default = 4;
-    console.log(3, 1, y, z);
-} catch (_) {
-    var _error = _, _hasError = !0;
+    }, !0);
+    console.log(w, x, 2, z);
+} catch (e) {
+    env.error = e, env.hasError = !0;
 } finally{
-    await _dispose(_stack, _error, _hasError);
+    let result = _ts_dispose_resources(env);
+    result && await result;
 }
-export { y, _default as default, _x as x, _w as w };
+export const x = 1;
+export const w = 3;
+export default 4;
+export { y };

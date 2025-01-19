@@ -1,5 +1,5 @@
-import { _ as _dispose } from "@swc/helpers/_/_dispose";
-import { _ as _using } from "@swc/helpers/_/_using";
+var _ts_add_disposable_resource = require("@swc/helpers/_/_ts_add_disposable_resource");
+var _ts_dispose_resources = require("@swc/helpers/_/_ts_dispose_resources");
 const logClean = function() {
     return {
         [Symbol.dispose] () {
@@ -11,43 +11,59 @@ const logClean = function() {
     };
 };
 async function foo() {
+    const env = {
+        stack: [],
+        error: void 0,
+        hasError: false
+    };
     try {
-        var _stack = [];
-        var a = _using(_stack, logClean());
-        var b = _using(_stack, logClean(), true);
-        for (const a of [
+        const a = _ts_add_disposable_resource._(env, logClean(), false);
+        const b = _ts_add_disposable_resource._(env, logClean(), true);
+        for (const _ of [
             logClean(),
             logClean()
         ]){
+            const env = {
+                stack: [],
+                error: void 0,
+                hasError: false
+            };
             try {
-                var _stack1 = [];
+                const a = _ts_add_disposable_resource._(env, _, false);
                 {}
-            } catch (_) {
-                var _error = _;
-                var _hasError = true;
+            } catch (e) {
+                env.error = e;
+                env.hasError = true;
             } finally{
-                _dispose(_stack1, _error, _hasError);
+                _ts_dispose_resources._(env);
             }
         }
-        for (const a of [
+        for (const _ of [
             logClean(),
             logClean()
         ]){
+            const env = {
+                stack: [],
+                error: void 0,
+                hasError: false
+            };
             try {
-                var _stack2 = [];
+                const a = _ts_add_disposable_resource._(env, _, true);
                 {}
-            } catch (_) {
-                var _error1 = _;
-                var _hasError1 = true;
+            } catch (e) {
+                env.error = e;
+                env.hasError = true;
             } finally{
-                _dispose(_stack2, _error1, _hasError1);
+                const result = _ts_dispose_resources._(env);
+                if (result) await result;
             }
         }
-    } catch (_) {
-        var _error2 = _;
-        var _hasError2 = true;
+    } catch (e) {
+        env.error = e;
+        env.hasError = true;
     } finally{
-        await _dispose(_stack, _error2, _hasError2);
+        const result = _ts_dispose_resources._(env);
+        if (result) await result;
     }
 }
 foo();

@@ -2,9 +2,9 @@
 define([
     "require",
     "exports",
-    "@swc/helpers/_/_dispose",
-    "@swc/helpers/_/_using"
-], function(require, exports, _dispose, _using) {
+    "@swc/helpers/_/_ts_add_disposable_resource",
+    "@swc/helpers/_/_ts_dispose_resources"
+], function(require, exports, _ts_add_disposable_resource, _ts_dispose_resources) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
         value: true
@@ -20,33 +20,33 @@ define([
             return _default;
         },
         w: function() {
-            return _w;
+            return w;
         },
         x: function() {
-            return _x;
+            return x;
         },
         y: function() {
             return y;
         }
     });
-    var _x;
-    var _w;
+    const env = {
+        stack: [],
+        error: void 0,
+        hasError: false
+    };
     try {
-        var _stack = [];
-        const x = 1;
-        _x = x;
-        var z = _using._(_stack, {
+        const z = _ts_add_disposable_resource._(env, {
             [Symbol.dispose] () {}
-        });
-        var y = 2;
-        const w = 3;
-        _w = w;
-        var _default = 4;
+        }, false);
+        const y = 2;
         console.log(w, x, y, z);
-    } catch (_) {
-        var _error = _;
-        var _hasError = true;
+    } catch (e) {
+        env.error = e;
+        env.hasError = true;
     } finally{
-        _dispose._(_stack, _error, _hasError);
+        _ts_dispose_resources._(env);
     }
+    const x = 1;
+    const w = 3;
+    const _default = 4;
 });

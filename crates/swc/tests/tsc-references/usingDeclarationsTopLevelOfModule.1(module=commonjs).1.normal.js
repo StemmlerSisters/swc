@@ -14,34 +14,34 @@ _export(exports, {
         return _default;
     },
     w: function() {
-        return _w;
+        return w;
     },
     x: function() {
-        return _x;
+        return x;
     },
     y: function() {
         return y;
     }
 });
-const _dispose = require("@swc/helpers/_/_dispose");
-const _using = require("@swc/helpers/_/_using");
-var _x;
-var _w;
+const _ts_add_disposable_resource = require("@swc/helpers/_/_ts_add_disposable_resource");
+const _ts_dispose_resources = require("@swc/helpers/_/_ts_dispose_resources");
+const env = {
+    stack: [],
+    error: void 0,
+    hasError: false
+};
 try {
-    var _stack = [];
-    const x = 1;
-    _x = x;
-    var z = _using._(_stack, {
+    const z = _ts_add_disposable_resource._(env, {
         [Symbol.dispose] () {}
-    });
-    var y = 2;
-    const w = 3;
-    _w = w;
-    var _default = 4;
+    }, false);
+    const y = 2;
     console.log(w, x, y, z);
-} catch (_) {
-    var _error = _;
-    var _hasError = true;
+} catch (e) {
+    env.error = e;
+    env.hasError = true;
 } finally{
-    _dispose._(_stack, _error, _hasError);
+    _ts_dispose_resources._(env);
 }
+const x = 1;
+const w = 3;
+const _default = 4;

@@ -1,4 +1,7 @@
-use std::path::{Component, Path, PathBuf};
+use std::{
+    cmp::Ordering,
+    path::{Component, Path, PathBuf},
+};
 
 use anyhow::{bail, Context, Error};
 use swc_common::FileName;
@@ -58,7 +61,7 @@ where
             );
         }
 
-        let paths = paths
+        let mut paths: Vec<(Pattern, Vec<String>)> = paths
             .into_iter()
             .map(|(from, to)| {
                 assert!(
@@ -91,6 +94,15 @@ where
                 (pat, to)
             })
             .collect();
+
+        paths.sort_by(|(a, _), (b, _)| match (a, b) {
+            (Pattern::Wildcard { .. }, Pattern::Exact(_)) => Ordering::Greater,
+            (Pattern::Exact(_), Pattern::Wildcard { .. }) => Ordering::Less,
+            (Pattern::Exact(_), Pattern::Exact(_)) => Ordering::Equal,
+            (Pattern::Wildcard { prefix: prefix_a }, Pattern::Wildcard { prefix: prefix_b }) => {
+                prefix_a.len().cmp(&prefix_b.len()).reverse()
+            }
+        });
 
         Self {
             inner,
@@ -220,7 +232,7 @@ where
                         debug!("Extra: `{}`", extra);
                     }
 
-                    let mut errors = vec![];
+                    let mut errors = Vec::new();
                     for target in to {
                         let replaced = target.replace('*', extra);
 
@@ -290,7 +302,7 @@ where
                         .split([std::path::MAIN_SEPARATOR, '/'])
                         .last()
                         .filter(|&slug| slug != "index.ts" && slug != "index.tsx")
-                        .map(|v| v.split_once('.').map(|v| v.0).unwrap_or(v))
+                        .map(|v| v.rsplit_once('.').map(|v| v.0).unwrap_or(v))
                         .map(From::from);
 
                     if tp.is_absolute() {

@@ -1,7 +1,8 @@
 //// [awaitUsingDeclarationsInForAwaitOf.ts]
 import { _ as _async_iterator } from "@swc/helpers/_/_async_iterator";
 import { _ as _async_to_generator } from "@swc/helpers/_/_async_to_generator";
-import { _ as _dispose } from "@swc/helpers/_/_dispose";
+import { _ as _ts_add_disposable_resource } from "@swc/helpers/_/_ts_add_disposable_resource";
+import { _ as _ts_dispose_resources } from "@swc/helpers/_/_ts_dispose_resources";
 function main() {
     return _main.apply(this, arguments);
 }
@@ -23,15 +24,21 @@ function _main() {
                     undefined
                 ]), _step; _iteratorAbruptCompletion = !(_step = yield _iterator.next()).done; _iteratorAbruptCompletion = false){
                     let _value = _step.value;
-                    const d1 = _value;
+                    const _ = _value;
+                    const env = {
+                        stack: [],
+                        error: void 0,
+                        hasError: false
+                    };
                     try {
-                        var _stack = [];
+                        const d1 = _ts_add_disposable_resource(env, _, true);
                         {}
-                    } catch (_) {
-                        var _error = _;
-                        var _hasError = true;
+                    } catch (e) {
+                        env.error = e;
+                        env.hasError = true;
                     } finally{
-                        _dispose(_stack, _error, _hasError);
+                        const result = _ts_dispose_resources(env);
+                        if (result) yield result;
                     }
                 }
             } catch (err) {

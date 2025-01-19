@@ -1,40 +1,35 @@
+const env = {
+    stack: [],
+    error: void 0,
+    hasError: false
+};
+try {
+    function f() {
+        a;
+        B;
+    }
+    function h() {
+        b;
+        A;
+    }
+    doSomething();
+    let c = 2;
+    class A {
+    }
+    const x = _ts_add_disposable_resource(env, null, false);
+} catch (e) {
+    env.error = e;
+    env.hasError = true;
+} finally{
+    _ts_dispose_resources(env);
+}
 import { doSomething } from "somewhere";
 export * from "somewhere else";
 export * as ns from "somewhere else";
-function f() {
-    a;
-    B;
+export function g() {
+    c;
 }
-function h() {
-    b;
-    A;
-}
-var _g;
 export { f };
-var _b;
-var _B;
-try {
-    var _stack = [];
-    function g() {
-        c;
-    }
-    _g = g;
-    doSomething();
-    let { b } = {};
-    _b = b;
-    var c = 2;
-    class A {
-    }
-    class B {
-    }
-    _B = B;
-    var x = _using(_stack, null);
-} catch (_) {
-    var _error = _;
-    var _hasError = true;
-} finally{
-    _dispose(_stack, _error, _hasError);
+export let { b } = {};
+export class B {
 }
-export { _g as g };
-export { _b as b };
-export { _B as B };

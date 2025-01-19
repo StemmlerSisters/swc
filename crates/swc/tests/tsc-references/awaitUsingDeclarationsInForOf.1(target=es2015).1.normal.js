@@ -1,12 +1,13 @@
 //// [awaitUsingDeclarationsInForOf.1.ts]
 import { _ as _async_to_generator } from "@swc/helpers/_/_async_to_generator";
-import { _ as _dispose } from "@swc/helpers/_/_dispose";
+import { _ as _ts_add_disposable_resource } from "@swc/helpers/_/_ts_add_disposable_resource";
+import { _ as _ts_dispose_resources } from "@swc/helpers/_/_ts_dispose_resources";
 function main() {
     return _main.apply(this, arguments);
 }
 function _main() {
     _main = _async_to_generator(function*() {
-        for (const d1 of [
+        for (const _ of [
             {
                 [Symbol.asyncDispose] () {
                     return _async_to_generator(function*() {})();
@@ -18,14 +19,20 @@ function _main() {
             null,
             undefined
         ]){
+            const env = {
+                stack: [],
+                error: void 0,
+                hasError: false
+            };
             try {
-                var _stack = [];
+                const d1 = _ts_add_disposable_resource(env, _, true);
                 {}
-            } catch (_) {
-                var _error = _;
-                var _hasError = true;
+            } catch (e) {
+                env.error = e;
+                env.hasError = true;
             } finally{
-                _dispose(_stack, _error, _hasError);
+                const result = _ts_dispose_resources(env);
+                if (result) yield result;
             }
         }
     });

@@ -1,22 +1,23 @@
-import { _ as _dispose } from "@swc/helpers/_/_dispose";
-import { _ as _using } from "@swc/helpers/_/_using";
-var _Disposable;
+import { _ as _ts_add_disposable_resource } from "@swc/helpers/_/_ts_add_disposable_resource";
+import { _ as _ts_dispose_resources } from "@swc/helpers/_/_ts_dispose_resources";
+const env = {
+    stack: [],
+    error: void 0,
+    hasError: false
+};
 try {
-    var _stack = [];
     var _computedKey;
     _computedKey = Symbol.dispose;
-    class Disposable {
-        [_computedKey]() {
-            console.log('dispose');
-        }
-    }
-    _Disposable = Disposable;
-    var _disposable = _using(_stack, new Disposable());
+    const _disposable = _ts_add_disposable_resource(env, new Disposable(), false);
     console.log('ok');
-} catch (_) {
-    var _error = _;
-    var _hasError = true;
+} catch (e) {
+    env.error = e;
+    env.hasError = true;
 } finally{
-    _dispose(_stack, _error, _hasError);
+    _ts_dispose_resources(env);
 }
-export { _Disposable as Disposable };
+export class Disposable {
+    [_computedKey]() {
+        console.log('dispose');
+    }
+}
